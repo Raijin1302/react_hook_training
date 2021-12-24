@@ -26,9 +26,10 @@ export default function Login(props) {
       // Thành công thi chuyển về trang trước đó
       //   props.history.goBack();
       //Chuyển đến trang chỉ đinh
-      props.history.push("/home");
+      // props.history.push("/home");
       //Thay đổi nội dung path tương ứng
-      //   props.history.replace("/home");
+      props.history.replace("/home");
+      localStorage.setItem("userLogin", JSON.stringify(userLogin));
     } else {
       alert("Login fail");
       return;
