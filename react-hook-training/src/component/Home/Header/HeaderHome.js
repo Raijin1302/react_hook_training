@@ -47,24 +47,31 @@ export default function HeaderHome() {
                 Detail
               </NavLink>
             </li>
-            <li className="nav-item dropdown">
-              <NavLink
-                className="nav-link dropdown-toggle"
-                to="#"
-                id="dropdownId"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Dropdown
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/todolist">
+                To do list
               </NavLink>
-              <div className="dropdown-menu" aria-labelledby="dropdownId">
-                <NavLink className="dropdown-item" to="#">
-                  Action 1
-                </NavLink>
-                <NavLink className="dropdown-item" to="#">
-                  Action 2
-                </NavLink>
+            </li>
+            <li>
+              <div class="dropdown">
+                <button
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="triggerId"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </button>
+                <div class="dropdown-menu" aria-labelledby="triggerId">
+                  <NavLink class="dropdown-item" to="/todolist">
+                    To do list
+                  </NavLink>
+                  <NavLink class="dropdown-item" to="/todolistrcc">
+                    To do list RCC
+                  </NavLink>
+                </div>
               </div>
             </li>
           </ul>

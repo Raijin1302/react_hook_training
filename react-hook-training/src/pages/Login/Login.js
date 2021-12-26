@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
+import { Prompt } from "react-router-dom";
 
 export default function Login(props) {
   const [userLogin, setUserLogin] = useState({
     userName: "",
     passWord: "",
+    status: false,
   });
 
   console.log(userLogin);
@@ -15,6 +17,19 @@ export default function Login(props) {
       ...userLogin,
       [name]: value,
     });
+
+    // const newUserLogin = {
+    //   ...userLogin,
+    //   [name]: value,
+    // };
+    // let valid = true;
+    // for (const key in newUserLogin) {
+    //   if (key !== "status") {
+    //     if (newUserLogin[key].trim() === "") {
+    //       valid = false;
+    //     }
+    //   }
+    // }
   };
 
   const handleLogin = (event) => {
@@ -64,6 +79,13 @@ export default function Login(props) {
           <button className="btn btn-success">Login</button>
         </div>
       </form>
+      <Prompt
+        when={true}
+        message={(location) => {
+          console.log(location);
+          return "Bạn có chắc muốn rời khỏi trang này";
+        }}
+      />
     </div>
   );
 }

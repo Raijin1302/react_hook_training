@@ -8,6 +8,8 @@ import Contact from "./pages/Contact/Contact";
 import Detail from "./pages/Detail/Detail";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Todolist from "./pages/Todolist/Todolist";
+import TodolistRCC from "./pages/Todolist/TodolistRCC";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,8 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/detail/:id" component={Detail} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/todolist" component={Todolist} />
+        <Route exact path="/todolistrcc" component={TodolistRCC} />
         <Route exact path="*" component={PageNotFound} />
         <Route exact path="/" component={Home} />
       </Switch>
