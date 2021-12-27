@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios, { Axios } from "axios";
 
 export default class TodolistRCC extends Component {
   state = {
     taskList: [],
+    values: {
+      taskName: "",
+    },
+    error: {
+      taskName: "",
+    },
   };
 
   getTaskList = () => {
@@ -51,20 +57,92 @@ export default class TodolistRCC extends Component {
   };
 
   renderTaskToDo = () => {
-    return this.state.taskList.map((item, index) => {
+    return this.state.taskList.map((item) => {
       return (
-        <li>
-          <p>{item.name}</p>
-          <p>{item.brand}</p>
-          <p>{item.sku}</p>
+        <li className="list-group-item" key={item.id}>
+          <div className="todo-indicator bg-success" />
+          <div className="widget-content p-0">
+            <div className="widget-content-wrapper">
+              <div className="widget-content-left mr-2">
+                <div className="custom-checkbox custom-control">
+                  <input
+                    className="custom-control-input"
+                    id="exampleCustomCheckbox3"
+                    type="checkbox"
+                  />
+                  <label
+                    className="custom-control-label"
+                    htmlFor="exampleCustomCheckbox3"
+                  >
+                    &nbsp;
+                  </label>
+                </div>
+              </div>
+              <div className="widget-content-left flex2">
+                <div className="widget-heading">{item.name}</div>
+                <div className="widget-subheading">{item.brand}</div>
+                <div className="widget-subheading">{item.colorway}</div>
+              </div>
+              <div className="widget-content-right">
+                {" "}
+                <button className="border-0 btn-transition btn btn-outline-success">
+                  {" "}
+                  <i className="fa fa-check" />
+                </button>{" "}
+                <button className="border-0 btn-transition btn btn-outline-danger">
+                  {" "}
+                  <i className="fa fa-trash" />{" "}
+                </button>{" "}
+              </div>
+            </div>
+          </div>
         </li>
       );
     });
   };
+
+  //Hàm tự động thực thi sau khi component được render
+  componentDidMount() {
+    this.getTaskList();
+  }
+
+  handleChange = (e) => {
+    let { value, name } = e.target;
+    console.log(value, name);
+    let newValues = { ...this.state.values };
+    newValues = { ...newValues, [name]: value };
+    let newErr = { ...this.state.error };
+
+    this.setState({
+      ...this.state,
+      values: newValues,
+      error: newErr,
+    });
+  };
+
+  addTask = (e) => {
+    e.preventDefault();
+    let promise = Axios({
+      url: "https://the-sneaker-database.p.rapidapi.com/sneakers",
+      method: "POST",
+      data: { taskName: this.state.values.taskName },
+    });
+
+    //Nếu thành công
+    promise.then((result) => {
+      console.log(result);
+    });
+    promise.catch((err) => {
+      console.log("Thành thụ", err);
+    });
+  };
   render() {
     return (
-      <div className="row d-flex justify-content-center container">
-        <div>
+      <form
+        className="row d-flex justify-content-center container"
+        onSubmit={this.addTask}
+      >
+        {/* <div>
           <button
             className="btn btn-success"
             onClick={() => {
@@ -73,7 +151,7 @@ export default class TodolistRCC extends Component {
           >
             Get task list
           </button>
-        </div>
+        </div> */}
         <div className="col-md-8">
           <div className="card-hover-shadow-2x mb-3 card">
             <div className="card-header-tab card-header">
@@ -88,222 +166,36 @@ export default class TodolistRCC extends Component {
                   <div className="ps-content">
                     <ul className=" list-group list-group-flush">
                       {this.renderTaskToDo()}
-                      <li className="list-group-item">
-                        <div className="todo-indicator bg-focus" />
-                        <div className="widget-content p-0">
-                          <div className="widget-content-wrapper">
-                            <div className="widget-content-left mr-2">
-                              <div className="custom-checkbox custom-control">
-                                <input
-                                  className="custom-control-input"
-                                  id="exampleCustomCheckbox1"
-                                  type="checkbox"
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor="exampleCustomCheckbox1"
-                                >
-                                  &nbsp;
-                                </label>
-                              </div>
-                            </div>
-                            <div className="widget-content-left">
-                              <div className="widget-heading">
-                                Make payment to Bluedart
-                              </div>
-                              <div className="widget-subheading">
-                                <div>
-                                  By Johnny{" "}
-                                  <div className="badge badge-pill badge-info ml-2">
-                                    NEW
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="widget-content-right">
-                              {" "}
-                              <button className="border-0 btn-transition btn btn-outline-success">
-                                {" "}
-                                <i className="fa fa-check" />
-                              </button>{" "}
-                              <button className="border-0 btn-transition btn btn-outline-danger">
-                                {" "}
-                                <i className="fa fa-trash" />{" "}
-                              </button>{" "}
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="list-group-item">
-                        <div className="todo-indicator bg-primary" />
-                        <div className="widget-content p-0">
-                          <div className="widget-content-wrapper">
-                            <div className="widget-content-left mr-2">
-                              <div className="custom-checkbox custom-control">
-                                <input
-                                  className="custom-control-input"
-                                  id="exampleCustomCheckbox4"
-                                  type="checkbox"
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor="exampleCustomCheckbox4"
-                                >
-                                  &nbsp;
-                                </label>
-                              </div>
-                            </div>
-                            <div className="widget-content-left flex2">
-                              <div className="widget-heading">Office rent </div>
-                              <div className="widget-subheading">
-                                By Samino!
-                              </div>
-                            </div>
-                            <div className="widget-content-right">
-                              {" "}
-                              <button className="border-0 btn-transition btn btn-outline-success">
-                                {" "}
-                                <i className="fa fa-check" />
-                              </button>{" "}
-                              <button className="border-0 btn-transition btn btn-outline-danger">
-                                {" "}
-                                <i className="fa fa-trash" />{" "}
-                              </button>{" "}
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="list-group-item">
-                        <div className="todo-indicator bg-info" />
-                        <div className="widget-content p-0">
-                          <div className="widget-content-wrapper">
-                            <div className="widget-content-left mr-2">
-                              <div className="custom-checkbox custom-control">
-                                <input
-                                  className="custom-control-input"
-                                  id="exampleCustomCheckbox2"
-                                  type="checkbox"
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor="exampleCustomCheckbox2"
-                                >
-                                  &nbsp;
-                                </label>
-                              </div>
-                            </div>
-                            <div className="widget-content-left">
-                              <div className="widget-heading">
-                                Office grocery shopping
-                              </div>
-                              <div className="widget-subheading">By Tida</div>
-                            </div>
-                            <div className="widget-content-right">
-                              {" "}
-                              <button className="border-0 btn-transition btn btn-outline-success">
-                                {" "}
-                                <i className="fa fa-check" />
-                              </button>{" "}
-                              <button className="border-0 btn-transition btn btn-outline-danger">
-                                {" "}
-                                <i className="fa fa-trash" />{" "}
-                              </button>{" "}
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="list-group-item">
-                        <div className="todo-indicator bg-success" />
-                        <div className="widget-content p-0">
-                          <div className="widget-content-wrapper">
-                            <div className="widget-content-left mr-2">
-                              <div className="custom-checkbox custom-control">
-                                <input
-                                  className="custom-control-input"
-                                  id="exampleCustomCheckbox3"
-                                  type="checkbox"
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor="exampleCustomCheckbox3"
-                                >
-                                  &nbsp;
-                                </label>
-                              </div>
-                            </div>
-                            <div className="widget-content-left flex2">
-                              <div className="widget-heading">
-                                Ask for Lunch to Clients
-                              </div>
-                              <div className="widget-subheading">
-                                By Office Admin
-                              </div>
-                            </div>
-                            <div className="widget-content-right">
-                              {" "}
-                              <button className="border-0 btn-transition btn btn-outline-success">
-                                {" "}
-                                <i className="fa fa-check" />
-                              </button>{" "}
-                              <button className="border-0 btn-transition btn btn-outline-danger">
-                                {" "}
-                                <i className="fa fa-trash" />{" "}
-                              </button>{" "}
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="list-group-item">
-                        <div className="todo-indicator bg-success" />
-                        <div className="widget-content p-0">
-                          <div className="widget-content-wrapper">
-                            <div className="widget-content-left mr-2">
-                              <div className="custom-checkbox custom-control">
-                                <input
-                                  className="custom-control-input"
-                                  id="exampleCustomCheckbox10"
-                                  type="checkbox"
-                                />
-                                <label
-                                  className="custom-control-label"
-                                  htmlFor="exampleCustomCheckbox10"
-                                >
-                                  &nbsp;
-                                </label>
-                              </div>
-                            </div>
-                            <div className="widget-content-left flex2">
-                              <div className="widget-heading">
-                                Client Meeting at 11 AM
-                              </div>
-                              <div className="widget-subheading">By CEO</div>
-                            </div>
-                            <div className="widget-content-right">
-                              {" "}
-                              <button className="border-0 btn-transition btn btn-outline-success">
-                                {" "}
-                                <i className="fa fa-check" />
-                              </button>{" "}
-                              <button className="border-0 btn-transition btn btn-outline-danger">
-                                {" "}
-                                <i className="fa fa-trash" />{" "}
-                              </button>{" "}
-                            </div>
-                          </div>
-                        </div>
-                      </li>
                     </ul>
                   </div>
                 </div>
               </perfect-scrollbar>
             </div>
             <div className="d-block text-right card-footer">
+              <div className="form-group">
+                <label htmlFor />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="taskName"
+                  id="taskName"
+                  placeholder="Enter an activity...."
+                  onChange={this.handleChange}
+                />
+                <small id="helpId" className="form-text text-muted">
+                  Help text
+                </small>
+              </div>
+
+              <p className="text text-danger">{this.state.error.taskName}</p>
               <button className="mr-2 btn btn-link btn-sm">Cancel</button>
-              <button className="btn btn-primary">Add Task</button>
+              <button className="btn btn-primary" onClick={this.addTask}>
+                Add Task
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
