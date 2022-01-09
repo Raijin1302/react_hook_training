@@ -34,7 +34,7 @@ export default class TodolistRCC extends Component {
 
     let promise = axios({
       method: "GET",
-      url: "https://the-sneaker-database.p.rapidapi.com/sneakers",
+      url: "https://reqres.in/api/users?page=2",
       params: { limit: "10" },
       headers: {
         "x-rapidapi-host": "the-sneaker-database.p.rapidapi.com",
@@ -46,7 +46,7 @@ export default class TodolistRCC extends Component {
       console.log("Thành công");
       console.log(response.data);
       this.setState({
-        taskList: response.data.results,
+        taskList: response.data.data,
       });
     });
 
@@ -79,9 +79,9 @@ export default class TodolistRCC extends Component {
                 </div>
               </div>
               <div className="widget-content-left flex2">
-                <div className="widget-heading">{item.name}</div>
-                <div className="widget-subheading">{item.brand}</div>
-                <div className="widget-subheading">{item.colorway}</div>
+                <div className="widget-heading">{item.first_name}</div>
+                <div className="widget-subheading">{item.last_name}</div>
+                <div className="widget-subheading">{item.email}</div>
               </div>
               <div className="widget-content-right">
                 {" "}
@@ -123,14 +123,15 @@ export default class TodolistRCC extends Component {
   addTask = (e) => {
     e.preventDefault();
     let promise = Axios({
-      url: "https://the-sneaker-database.p.rapidapi.com/sneakers",
+      url: "https://reqres.in/api/users",
       method: "POST",
       data: { taskName: this.state.values.taskName },
     });
 
-    //Nếu thành công
+    //Nếu thành công load lại dữ liệu
     promise.then((result) => {
       console.log(result);
+      this.getTaskList();
     });
     promise.catch((err) => {
       console.log("Thành thụ", err);
